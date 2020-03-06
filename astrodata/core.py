@@ -14,7 +14,7 @@ from abc import ABCMeta, abstractmethod, abstractproperty
 from functools import wraps
 import inspect
 from collections import namedtuple
-from copy import deepcopy
+from copy import copy, deepcopy
 
 
 class TagSet(namedtuple('TagSet', 'add remove blocked_by blocks if_present')):
@@ -490,6 +490,9 @@ class AstroData(object):
         dp = deepcopy(self._dataprov, memo)
         ad = self.__class__(dp)
         return ad
+
+    def __copy__(self):
+        return self.__class__(copy(self._dataprov))
 
     def __process_tags(self):
         """

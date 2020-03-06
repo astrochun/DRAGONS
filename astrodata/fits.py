@@ -347,8 +347,11 @@ class FitsProviderProxy(DataProvider):
     def is_single(self):
         return self._single
 
+    def __copy__(self):
+        return self._provider._clone(mapping=self._mapping, deep=False)
+
     def __deepcopy__(self, memo):
-        return self._provider._clone(mapping=self._mapping)
+        return self._provider._clone(mapping=self._mapping, deep=True)
 
     def is_settable(self, attr):
         if attr in {'path', 'filename'}:
@@ -619,12 +622,24 @@ class FitsProvider(DataProvider):
             })
 
     def __deepcopy__(self, memo):
+        return self._copy_impl(memo)
+
+    def __copy__(self):
+        return self._copy_impl(None)
+
+    def _copy_impl(self, memo):
+        # Generic copier that either deep- or shallow-copies _nddata and _tables
         nfp = FitsProvider()
-        to_copy = ('_sliced', '_phu', '_single', '_nddata',
-                   '_path', '_orig_filename', '_tables', '_exposed',
+        to_copy = ('_sliced', '_single',
+                   '_path', '_orig_filename', '_exposed',
                    '_resetting')
         for attr in to_copy:
             nfp.__dict__[attr] = deepcopy(self.__dict__[attr])
+        for attr in ('_phu', '_nddata', '_tables'):
+            if memo is None:
+                nfp.__dict__[attr] = self.__dict__[attr]
+            else:
+                nfp.__dict__[attr] = deepcopy(self.__dict__[attr])
 
         # Top-level tables
         for key in set(self.__dict__) - set(nfp.__dict__):
@@ -632,16 +647,16 @@ class FitsProvider(DataProvider):
 
         return nfp
 
-    def _clone(self, mapping=None):
+    def _clone(self, mapping=None, deep=True):
         if mapping is None:
             mapping = range(len(self))
 
         dp = FitsProvider()
         dp._phu = deepcopy(self._phu)
         for n in mapping:
-            dp.append(deepcopy(self._nddata[n]))
+            dp.append(deepcopy(self._nddata[n]) if deep else self._nddata[n])
         for t in self._tables.values():
-            dp.append(deepcopy(t))
+            dp.append(deepcopy(t) if deep else t)
 
         return dp
 
