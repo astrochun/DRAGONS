@@ -354,8 +354,8 @@ class FitsProviderProxy(DataProvider):
         return self._provider._clone(mapping=self._mapping, deep=True)
 
     def is_settable(self, attr):
-        if attr in {'path', 'filename'}:
-            return False
+        #if attr in {'path', 'filename'}:
+        #    return False
 
         return self._provider.is_settable(attr)
 
