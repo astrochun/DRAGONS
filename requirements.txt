@@ -1,6 +1,7 @@
 asdf
 astropy>=4.1
 astroquery
+astroscrappy
 cython
 future
 ginga
@@ -9,8 +10,8 @@ imexam
 matplotlib
 numpy
 photutils
-python-dateutil
 pytest
+python-dateutil
 scipy
 specutils
 sqlalchemy
