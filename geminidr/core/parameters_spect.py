@@ -314,6 +314,7 @@ class flagCosmicRaysConfig(config.Config):
         optional=True,
         default=False,
     )
+    plot = config.Field("Make diagnostic plots?", bool, False)
 
 
 def flux_units_check(value):
