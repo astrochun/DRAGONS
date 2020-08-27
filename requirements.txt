@@ -1,7 +1,8 @@
 asdf
 astropy>=4.1
 astroquery
-astroscrappy
+# astroscrappy
+-e git+https://github.com/cmccully/astroscrappy.git@feature/var_and_spectroscopy#egg=astroscrappy
 cython
 future
 ginga
