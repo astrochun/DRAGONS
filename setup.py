@@ -19,7 +19,7 @@ import os
 
 from setuptools import setup, find_packages, Extension
 
-from astrodata._version import version
+# from astrodata._version import version
 
 try:
     from Cython.Build import cythonize
@@ -29,7 +29,7 @@ else:
     use_cython = True
 
 PACKAGENAME = 'dragons'
-PACKAGES = find_packages('.', exclude=['*tests*'])
+PACKAGES = find_packages()
 
 # SCRIPTS
 SCRIPTS = [
@@ -54,7 +54,8 @@ if use_cython:
     EXTENSIONS = cythonize(EXTENSIONS)
 
 setup(name='dragons',
-      version=version(),
+      # version=version(),
+      version='3.0.0-dev',
       description='Gemini Data Processing Python Package',
       author='Gemini Data Processing Software Group',
       author_email='sus_inquiries@gemini.edu',
